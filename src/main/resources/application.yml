@@ -1,0 +1,13 @@
+server:
+  port: 8181
+spring:
+  application:
+    name: jasper-demo #指定服务名
+  resources:
+    static-locations: classpath:/templates/
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ihrm?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
+
