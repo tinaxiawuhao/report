@@ -10,4 +10,9 @@ spring:
     url: jdbc:mysql://localhost:3306/ihrm?useUnicode=true&characterEncoding=utf8
     username: root
     password: root
+pathConfig:
+  #html转pdf工具安装地址
+  toPdfTool: G:\\wkhtmltopdf\\bin\\wkhtmltopdf.exe
+  #系统域名
+  pdfHttpHeader: http://localhost:8181
 

@@ -8,7 +8,7 @@
 2. Openoffice：openoffice是开源软件且能在windows和linux平台下运行，可以灵活的将word或者Excel转化为PDF文档。
 3. Jasper Report：是一个强大、灵活的报表生成工具，能够展示丰富的页面内容，并将之转换成PDF
 ```
-## JasperReport框架的介绍
+## 1.JasperReport框架的介绍
 ```
 JasperReport是一个强大、灵活的报表生成工具，能够展示丰富的页面内容，并将之转换成PDF，HTML，或者
 XML格式。该库完全由Java写成，可以用于在各种Java应用程序，包括J2EE，Web应用程序中生成动态内容。只需
@@ -200,3 +200,131 @@ public class JasperController {
 指定中文配置文件fonts.xml
 引入字体库stsong.TTF
 ```
+
+## 2.wkhtmltopdf 实现html转换pdf
+```
+1.安装wkhtmltopdf 
+官网地址:https://wkhtmltopdf.org/
+```
+### wkhtmltopdf配置
+```
+/**
+ * Input表单或JavaScript脚本支持：--enable-forms，下面这些是网友整理的参数说明
+ * wkhtmltopdf [OPTIONS]... <input file> [More input files] <output file>
+ * 常规选项
+ * --allow <path>                  允许加载从指定的文件夹中的文件或文件（可重复）
+ * --book*                         设置一会打印一本书的时候，通常设置的选项
+ * --collate                       打印多份副本时整理
+ * --cookie <name> <value>         设置一个额外的cookie（可重复）
+ * --cookie-jar <path>             读取和写入的Cookie，并在提供的cookie jar文件
+ * --copies <number>               复印打印成pdf文件数（默认为1）
+ * --cover* <url>                  使用HTML文件作为封面。它会带页眉和页脚的TOC之前插入
+ * --custom-header <name> <value>  设置一个附加的HTTP头（可重复）
+ * --debug-javascript              显示的javascript调试输出
+ * --default-header*               添加一个缺省的头部，与页面的左边的名称，页面数到右边，例如： --header-left '[webpage]' --header-right '[page]/[toPage]'  --header-line
+ * --disable-external-links*       禁止生成链接到远程网页
+ * --disable-internal-links*       禁止使用本地链接
+ * --disable-javascript            禁止让网页执行JavaScript
+ * --disable-pdf-compression*      禁止在PDF对象使用无损压缩
+ * --disable-smart-shrinking*      禁止使用WebKit的智能战略收缩，使像素/ DPI比没有不变
+ * --disallow-local-file-access    禁止允许转换的本地文件读取其他本地文件，除非explecitily允许用 --allow
+ * --dpi <dpi>                     显式更改DPI（这对基于X11的系统没有任何影响）
+ * --enable-plugins                启用已安装的插件（如Flash
+ * --encoding <encoding>           设置默认的文字编码
+ * --extended-help                 显示更广泛的帮助，详细介绍了不常见的命令开关
+ * --forms*                        打开HTML表单字段转换为PDF表单域
+ * --grayscale                     PDF格式将在灰阶产生
+ * --help                          Display help
+ * --htmldoc                       输出程序HTML帮助
+ * --ignore-load-errors            忽略claimes加载过程中已经遇到了一个错误页面
+ * --lowquality                    产生低品质的PDF/ PS。有用缩小结果文档的空间
+ * --manpage                       输出程序手册页
+ * --margin-bottom <unitreal>      设置页面下边距 (default 10mm)
+ * --margin-left <unitreal>        将左边页边距 (default 10mm)
+ * --margin-right <unitreal>       设置页面右边距 (default 10mm)
+ * --margin-top <unitreal>         设置页面上边距 (default 10mm)
+ * --minimum-font-size             <)
+ * --no-background                 不打印背景
+ * --orientation <orientation>     设置方向为横向或纵向
+ * --page-height <unitreal>        页面高度 (default unit millimeter)
+ * --page-offset* <offset>         设置起始页码 (default )
+ * --page-size <size>              设置纸张大小: A4, Letter, etc.
+ * --page-width <unitreal>         页面宽度 (default unit millimeter)
+ * --password <password>           HTTP验证密码
+ * --post <name> <value>           Add an additional post field (repeatable)
+ * --post-file <name> <path>       Post an aditional file (repeatable)
+ * --print-media-type*             使用的打印介质类型，而不是屏幕
+ * --proxy <proxy>                 使用代理
+ * --quiet                         Be less verbose
+ * --read-args-from-stdin          读取标准输入的命令行参数
+ * --readme                        输出程序自述
+ * --redirect-delay <msec>         等待几毫秒为JS-重定向(default )
+ * --replace* <name> <value>       替换名称，值的页眉和页脚（可重复）
+ * --stop-slow-scripts             停止运行缓慢的JavaScripts
+ * --title <text>                  生成的PDF文件的标题（第一个文档的标题使用，如果没有指定）
+ * --toc*                          插入的内容的表中的文件的开头
+ * --use-xserver*                  使用X服务器（一些插件和其他的东西没有X11可能无法正常工作）
+ * --user-style-sheet <url>        指定用户的样式表，加载在每一页中
+ * --username <username>           HTTP认证的用户名
+ * --version                       输出版本信息退出
+ * --zoom                          <)
+ *
+ * 页眉和页脚选项
+ * --header-center*    <text>  (设置在中心位置的页眉内容)
+ * --header-font-name* <name>  (default Arial)(设置页眉的字体名称)
+ * --header-font-size* <size>  (设置页眉的字体大小)
+ * --header-html*      <url>   (添加一个HTML页眉，后面是网址)
+ * --header-left*      <text>  (左对齐的页眉文本)
+ * --header-line*              (显示一条线在页眉下)
+ * --header-right*     <text>  (右对齐页眉文本)
+ * --header-spacing*   <real>  (设置页眉和内容的距离，默认0)
+ * --footer-center*    <text>  (设置在中心位置的页脚内容)
+ * --footer-font-name* <name>  (设置页脚的字体名称)
+ * --footer-font-size* <size>  (设置页脚的字体大小default )
+ * --footer-html*      <url>   (添加一个HTML页脚，后面是网址)
+ * --footer-left*      <text>  (左对齐的页脚文本)
+ * --footer-line*              显示一条线在页脚内容上)
+ * --footer-right*     <text>  (右对齐页脚文本)
+ * --footer-spacing*   <real>  (设置页脚和内容的距离)
+ *
+ * 页脚和页眉
+ * [page]       由当前正在打印的页的数目代替
+ * [frompage]   由要打印的第一页的数量取代
+ * [topage]     由最后一页要打印的数量取代
+ * [webpage]    通过正在打印的页面的URL替换
+ * [section]    由当前节的名称替换
+ * [subsection] 由当前小节的名称替换
+ * [date]       由当前日期系统的本地格式取代
+ * [time]       由当前时间，系统的本地格式取代
+ *
+ * 轮廓选项
+ * --dump-outline  <file>  转储目录到一个文件
+ * --outline               显示目录（文章中h1，h2来定）
+ * --outline-depth <level> 设置目录的深度（默认为4）
+ *
+ * 表内容选项中
+ *  --toc-depth*              <level>  Set the depth of the toc (default)
+ *  --toc-disable-back-links*          Do not link from section header to toc
+ *  --toc-disable-links*               Do not link from toc to sections
+ *  --toc-font-name*          <name>   Set the font used for the toc (default Arial)
+ *  --toc-header-font-name*   <name>   The font of the toc header (if unset use --toc-font-name)
+ *  --toc-header-font-size*   <size>   The font size of the toc header (default)
+ *  --toc-header-text*        <text>   The header text of the toc (default Table Of Contents)
+ *  --toc-l1-font-size*       <size>   Set the font size on level of the toc (default)
+ *  --toc-l1-indentation*     <num>    Set indentation on level of the toc (default)
+ *  --toc-l2-font-size*       <size>   Set the font size on level of the toc (default)
+ *  --toc-l2-indentation*     <num>    Set indentation on level of the toc (default)
+ *  --toc-l3-font-size*       <size>   Set the font size on level of the toc (default)
+ *  --toc-l3-indentation*     <num>    Set indentation on level of the toc (default)
+ *  --toc-l4-font-size*       <size>   Set the font size on level of the toc (default)
+ *  --toc-l4-indentation*     <num>    Set indentation on level of the toc (default)
+ *  --toc-l5-font-size*       <size>   Set the font size on level of the toc (default)
+ *  --toc-l5-indentation*     <num>    Set indentation on level of the toc (default)
+ *  --toc-l6-font-size*       <size>   Set the font size on level of the toc (default)
+ *  --toc-l6-indentation*     <num>    Set indentation on level of the toc (default)
+ *  --toc-l7-font-size*       <size>   Set the font size on level of the toc (default)
+ *  --toc-l7-indentation*     <num>    Set indentation on level of the toc (default)
+ *  --toc-no-dots*                     Do not use dots, in the toc
+ * ------------------------------------------------------------------------------------------------------------*/
+```
+
