@@ -1,7 +1,7 @@
 package com.ihrm.report.service;
 
-import com.ihrm.report.utils.FileUtil;
-import com.ihrm.report.utils.HtmlToPdfInterceptor;
+import com.ihrm.report.function.FileUtil;
+import com.ihrm.report.function.HtmlToPdfInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,7 +1,7 @@
 package com.ihrm.report.controller;
 
 import com.ihrm.report.service.HtmlToPdfService;
-import com.ihrm.report.utils.FileUtil;
+import com.ihrm.report.function.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
